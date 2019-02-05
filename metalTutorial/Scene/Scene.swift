@@ -9,6 +9,8 @@ class Scene: Node{
     
     var light = Light()
     
+    var model: Model!
+    
     init(device: MTLDevice){
         self.device = device
         super.init()

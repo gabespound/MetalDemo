@@ -8,6 +8,8 @@ class Renderer: NSObject{
     
     var samplerState: MTLSamplerState!
     
+    var basicScene: BasicScene!
+    var terrainScene: TerrainScene!
     var scene: Scene!
     
     var device: MTLDevice!
@@ -21,7 +23,8 @@ class Renderer: NSObject{
     init(device: MTLDevice){
         super.init()
         self.device = device
-        changeScene(device: device)
+        self.basicScene = BasicScene(device: device)
+        self.terrainScene = TerrainScene(device: device)
         commandQueue = device.makeCommandQueue()
         changeScene(device: device)
         buildDepthStencilState(device: device)
@@ -46,10 +49,10 @@ class Renderer: NSObject{
     func changeScene(device: MTLDevice){
         if Renderer.sceneChanged {
             if(self.modelScene){
-                self.scene = BasicScene(device: device)
+                self.scene = basicScene
                 self.modelScene = false
             } else{
-                self.scene = TerrainScene(device: device)
+                self.scene = terrainScene
                 self.modelScene = true
             }
             Renderer.sceneChanged = false

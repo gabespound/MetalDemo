@@ -4,10 +4,9 @@ class BasicScene: Scene{
     
     var speed: Float = 0.5
     
-    var model: Model!
     override init(device: MTLDevice){
-        model = Model(device: device, modelName: "armadillo", imageName: "")
         super.init(device: device)
+        model = Model(device: device, modelURL: Bundle.main.url(forResource: "armadillo", withExtension: "obj")!, imageName: "")
 
         model.position.z = -4
         model.position.y = -0.5
@@ -24,6 +23,12 @@ class BasicScene: Scene{
         model.shininess = Preferences.shine
         model.specularIntensity = Preferences.spec
         model.scale = float3(1)
+    }
+    
+    func newModel() {
+        children.removeAll()
+        model.materialColor = float4(0.5, 0.6, 0.6, 1.0)
+        add(child: model)
     }
     
     override func render(commandEncoder: MTLRenderCommandEncoder, deltaTime: Float){

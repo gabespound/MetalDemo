@@ -33,3 +33,11 @@ struct moveData {
     static var camRY: Float = 0.0
     static var camRX: Float = 0.0
 }
+struct SkyBoxConstants {
+    static var modelViewMatrix = matrix_identity_float4x4
+    static var modelViewProjectionMatrix = matrix_identity_float4x4
+    static var normalMatrix = matrix_identity_float4x4
+    static var invertedViewMatrix = matrix_identity_float4x4
+    static var skyBoxModelViewProjectionMatrix = matrix_identity_float4x4
+}
+

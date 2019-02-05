@@ -36,9 +36,9 @@ class Model: Node{
 
         return vertexDescriptor
     }
-    init(device: MTLDevice, modelName: String, imageName: String) {
+    init(device: MTLDevice, modelURL: URL, imageName: String) {
         super.init()
-        buildModelMeshes(device: device, modelName: modelName)
+        buildModelMeshes(device: device, modelUrl: modelURL)
         
         if(imageName != ""){
             texture = setTexture(device: device, imageName: imageName)
@@ -48,8 +48,8 @@ class Model: Node{
         renderPipelineState = buildPipelineState(device: device)
     }
     
-    func buildModelMeshes(device: MTLDevice, modelName: String){
-        let assetURL = Bundle.main.url(forResource: modelName, withExtension: "obj")
+    func buildModelMeshes(device: MTLDevice, modelUrl: URL){
+        let assetURL = modelUrl
         
         let assetVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(vertexDescriptor)
         

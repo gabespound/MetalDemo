@@ -4,21 +4,20 @@ class TerrainScene: Scene{
     
     var speed: Float = 0.1
     var t: Terrain!
-    var m: Model!
     override init(device: MTLDevice){
-        t = Terrain(device: device, imageName: "Grass.jpg")
-        m = Model(device: device, modelName: "f16", imageName: "F16s.bmp")
         super.init(device: device)
+        t = Terrain(device: device, imageName: "Grass.jpg")
+        model = Model(device: device, modelURL: Bundle.main.url(forResource: "f16", withExtension: ".obj")!, imageName: "F16s.bmp")
         
-        m.position.z = -4
-        m.position.y = 20
-        m.scale.x = 30
-        m.scale.y = 30
-        m.scale.z = 30
+        model.position.z = -4
+        model.position.y = 20
+        model.scale.x = 30
+        model.scale.y = 30
+        model.scale.z = 30
         t.position.x = -400
         t.position.z = -400
         
-        m.materialColor = float4(0.5, 0.6, 0.6, 1.0)
+        model.materialColor = float4(0.5, 0.6, 0.6, 1.0)
         light.color = float3(1)
         light.direction = float3(0,0,-1)
         
@@ -28,11 +27,27 @@ class TerrainScene: Scene{
         
         
         add(child: t)
-        add(child: m)
+        add(child: model)
     }
     
     override func updateModel() {
-        m.scale = float3(30)
+        model.shininess = Preferences.shine
+        model.specularIntensity = Preferences.spec
+        model.scale = float3(30)
+    }
+    
+    func newModel() {
+        children.removeAll()
+        model.materialColor = float4(0.5, 0.6, 0.6, 1.0)
+        model.position.z = -4
+        model.position.y = 20
+        model.scale.x = 30
+        model.scale.y = 30
+        model.scale.z = 30
+        t.position.x = -400
+        t.position.z = -400
+        add(child: model)
+        add(child: t)
     }
     
     override func render(commandEncoder: MTLRenderCommandEncoder, deltaTime: Float){

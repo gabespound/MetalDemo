@@ -15,8 +15,8 @@ class Instance: Node{
     
     var instanceBuffer: MTLBuffer!
     
-    init(device: MTLDevice, modelName: String, imageName: String, instanceCount: Int){
-        model = Model(device: device, modelName: modelName, imageName: imageName)
+    init(device: MTLDevice, modelURL: URL, imageName: String, instanceCount: Int){
+        model = Model(device: device, modelURL: modelURL, imageName: imageName)
         vertexDescriptor = model.vertexDescriptor
         super.init()
         generate(instanceCount: instanceCount)

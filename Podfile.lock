@@ -1,0 +1,16 @@
+PODS:
+  - iOS-Color-Picker (1.2)
+
+DEPENDENCIES:
+  - iOS-Color-Picker
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - iOS-Color-Picker
+
+SPEC CHECKSUMS:
+  iOS-Color-Picker: 4284a4d744a7cafe9d22d4b66eefc45342b80f1d
+
+PODFILE CHECKSUM: b55f275ac937874bdee30543aa7707846a709e57
+
+COCOAPODS: 1.5.3

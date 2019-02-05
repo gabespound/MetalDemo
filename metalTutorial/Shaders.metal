@@ -1,5 +1,4 @@
 #include <metal_stdlib>
-#include <metal_geometric>
 using namespace metal;
 
 struct VertexIn{
@@ -55,9 +54,10 @@ vertex VertexOut basic_vertex_function(const VertexIn vIn [[ stage_in ]],
 }
 
 vertex VertexOut instance_vertex_function(const VertexIn vIn [[ stage_in ]],
-                                       constant ModelConstants *instances [[ buffer(1) ]],
-                                       constant SceneConstants &sceneConstants [[ buffer(2) ]],
-                                       uint instanceID [[ instance_id ]]){
+                                          constant ModelConstants *instances [[ buffer(1) ]],
+                                          constant SceneConstants &sceneConstants [[ buffer(2) ]],
+                                          uint instanceID [[ instance_id ]]){
+    
     ModelConstants modelConstants = instances[instanceID];
     VertexOut vOut;
     vOut.position = sceneConstants.projectionMatrix *  modelConstants.modelViewMatrix * vIn.position;
@@ -67,43 +67,36 @@ vertex VertexOut instance_vertex_function(const VertexIn vIn [[ stage_in ]],
 }
 
 fragment half4 basic_fragment_function(VertexOut vIn [[ stage_in ]],
-                                        constant Light &light [[ buffer(1) ]]){
-    
+                                       constant Light &light [[ buffer(1) ]]){
     float3 unitNormal = normalize(vIn.surfaceNormal);
     float3 unitEye = normalize(vIn.eyePosition);
     float4 color = vIn.color;
     
-    //ambient color
+    //Ambient Color
     float3 ambientColor = light.color * light.ambientIntensity;
     
-    //diffuse Color
+    //Diffuse Color
     float diffuseFactor = saturate(-dot(unitNormal, light.direction));
     float3 diffuseColor = light.color * light.diffuseIntensity * diffuseFactor;
     
     //Specular Color
     float3 reflection = reflect(light.direction, unitNormal);
     float specularFactor = pow(saturate(-dot(reflection, unitEye)), vIn.shininess);
-    
     float3 specularColor = light.color * vIn.specularIntensity * specularFactor;
     
-    color = color * float4(ambientColor + diffuseColor + specularColor,1);
-    
+    color = color * float4(ambientColor + diffuseColor + specularColor, 1);
     return half4(color.x, color.y, color.z, 1);
 }
 
 fragment half4 textured_fragment_function(VertexOut vIn [[ stage_in ]],
-                                       constant Light &light [[ buffer(1) ]],
+                                          constant Light &light [[ buffer(1) ]],
                                           sampler sampler2d [[ sampler(0) ]],
                                           texture2d<float> texture [[ texture(0) ]]){
-
     float4 color = texture.sample(sampler2d, vIn.textCoords);
     
     float3 ambientColor = light.color * light.ambientIntensity;
     
-    color = color * float4(ambientColor,1);
+    color = color * float4(ambientColor, 1);
     
     return half4(color.x, color.y, color.z, 1);
 }
-
-
-
